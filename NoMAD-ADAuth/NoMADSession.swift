@@ -493,7 +493,7 @@ public class NoMADSession : NSObject {
             throw NoMADSessionError.StateError
         }
         
-        let myResult = cleanLDIF(ldapResult)
+        let myResult = cleanLDIF(ldapResult, true)
         
         // TODO
         //swapPrincipals(true)
@@ -524,7 +524,7 @@ public class NoMADSession : NSObject {
 
         if recursiveGroupLookup {
             let attributes = ["name"]
-            let searchTerm = "(member:1.2.840.113556.1.4.1941:=" + dn.replacingOccurrences(of: "\\", with: "\\\\5c") + ")"
+            let searchTerm = "(member:1.2.840.113556.1.4.1941:=\(dn.encodeNonASCIIAsUTF8Hex()))"
             if let ldifResult = try? getLDAPInformation(attributes, searchTerm: searchTerm) {
                 groupsTemp = ""
                 for item in ldifResult {
@@ -694,7 +694,7 @@ public class NoMADSession : NSObject {
     
     // MARK: LDAP cleanup functions
     
-    fileprivate func cleanLDIF(_ ldif: String) -> [[String:String]] {
+    fileprivate func cleanLDIF(_ ldif: String, _ decodeBase64: Bool = false) -> [[String:String]] {
         //var myResult = [[String:String]]()
         
         var ldifLines: [String] = ldif.components(separatedBy: CharacterSet.newlines)
@@ -757,9 +757,16 @@ public class NoMADSession : NSObject {
                     // base64
                     let tempAttributeValue = attributeValue.substring(from: attributeValue.index(after: attributeValue.startIndex)).trim()
                     if (Data(base64Encoded: tempAttributeValue, options: NSData.Base64DecodingOptions.init(rawValue: 0)) != nil) {
-                        //attributeValue = tempAttributeValue
-                        
-                        attributeValue = String.init(data: Data.init(base64Encoded: tempAttributeValue)!, encoding: String.Encoding.utf8) ?? ""
+                        if decodeBase64 {
+                            if let data = Data(base64Encoded: tempAttributeValue),
+                               let final = String(data: data, encoding: .utf8) {
+                                attributeValue = final
+                            } else {
+                                attributeValue = tempAttributeValue
+                            }
+                        } else {
+                            attributeValue = tempAttributeValue
+                        }
                     } else {
                         attributeValue = ""
                     }
