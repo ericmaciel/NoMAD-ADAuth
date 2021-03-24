@@ -487,6 +487,7 @@ public class NoMADSession : NSObject {
             arguments.append(searchTerm)
         }
         arguments.append(contentsOf: attributes)
+        myLogger.logit(.debug, message: "LDAP arguments: \(arguments)")
         let ldapResult = cliTask(command, arguments: arguments)
         
         if (ldapResult.contains("GSSAPI Error") || ldapResult.contains("Can't contact")) {
@@ -495,6 +496,7 @@ public class NoMADSession : NSObject {
         
         let myResult = cleanLDIF(ldapResult, true)
         
+        myLogger.logit(.debug, message: "LDAP Result: \(myResult)")
         // TODO
         //swapPrincipals(true)
         
@@ -1214,6 +1216,8 @@ extension NoMADSession: NoMADUserSession {
         // return the userRecord unless we came back empty
         if userRecord != nil {
             delegate?.NoMADUserInformation(user: userRecord!)
+        } else {
+            delegate?.NoMADAuthenticationFailed(error: .StateError, description: "Unable to get user record")
         }
     }
 }

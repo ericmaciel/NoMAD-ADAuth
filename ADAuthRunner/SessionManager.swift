@@ -21,6 +21,7 @@ class SessionManager: ObservableObject {
         self.session = NoMADSession(domain: domain.uppercased(), user: user)
         self.session?.delegate = self
         self.session?.userPass = password
+        self.session?.recursiveGroupLookup = true
     }
     
     func auth() {
