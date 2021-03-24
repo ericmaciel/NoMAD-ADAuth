@@ -674,10 +674,21 @@ public class NoMADSession : NSObject {
                 
                 // pack up user record
 
+                myLogger.logit(.debug, message: "Packing up user record")
+                myLogger.logit(.debug, message: "User Principal: \(userPrincipal), firstName: \(firstName), lastName: \(lastName), fullName: \(userDisplayName), shortName: \(userPrincipalShort), upn: \(UPN), email: \(userEmail), groups: \(groups), homeDirectory: \(userHome), passwordSet: \(tempPasswordSetDate), passwordExpire: \(userPasswordExpireDate), uacFlags: \(Int(userPasswordUACFlag)), passwordAging: \(passwordAging), computedExpireDate: \(userPasswordExpireDate), domain: \(domain), pso: \(pso), passwordLength: \(getComplexity(pso: pso)), ntName: \(ntName), customAttributes: \(customAttributeResults)")
+
+
                 userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: userPrincipalShort, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults)
+                
+                if userRecord != nil {
+                    delegate?.NoMADUserInformation(user: userRecord!)
+                } else {
+                    delegate?.NoMADAuthenticationFailed(error: .StateError, description: "Unable to get user record")
+                }
                 
             } else {
                 myLogger.logit(.base, message: "Unable to find user.")
+                delegate?.NoMADAuthenticationFailed(error: .StateError, description: "Unable to get user record")
             }
             
         } else {
@@ -690,6 +701,7 @@ public class NoMADSession : NSObject {
             extractedFunc(attributes, searchTerm)
         }
         
+
         // pack up the user record
         
     }
@@ -1213,12 +1225,6 @@ extension NoMADSession: NoMADUserSession {
         }
 
         getUserInformation()
-        // return the userRecord unless we came back empty
-        if userRecord != nil {
-            delegate?.NoMADUserInformation(user: userRecord!)
-        } else {
-            delegate?.NoMADAuthenticationFailed(error: .StateError, description: "Unable to get user record")
-        }
     }
 }
 
