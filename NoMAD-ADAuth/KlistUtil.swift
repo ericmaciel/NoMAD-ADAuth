@@ -8,7 +8,9 @@
 
 import Foundation
 import GSS
+#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
+#endif
 
 // Class to parse klist -v --json and return all tickets and times
 

@@ -8,7 +8,9 @@
 
 import Foundation
 import XCTest
+#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
+#endif
 @testable import NoMAD_ADAuth
 
 class ADUserTests : XCTestCase, NoMADUserSessionDelegate {

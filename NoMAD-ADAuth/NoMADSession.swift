@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
+#endif
 
 public protocol NoMADUserSession {
     func authenticate(authTestOnly: Bool)
