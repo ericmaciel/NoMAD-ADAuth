@@ -17,7 +17,7 @@ public protocol NoMADUserSession {
     var state: NoMADSessionState { get }
 }
 
-public protocol NoMADUserSessionDelegate: class {
+public protocol NoMADUserSessionDelegate: AnyObject {
     func NoMADAuthenticationSucceded()
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String)
     func NoMADUserInformation(user: ADUserRecord)
@@ -766,10 +766,10 @@ public class NoMADSession : NSObject {
                 // If
                 if attributeValue.hasPrefix("<") {
                     // url
-                    attributeValue = attributeValue.substring(from: attributeValue.index(after: attributeValue.startIndex)).trim()
+                    attributeValue = String(attributeValue.suffix(from: attributeValue.index(after: attributeValue.startIndex))).trim()
                 } else if attributeValue.hasPrefix(":") {
                     // base64
-                    let tempAttributeValue = attributeValue.substring(from: attributeValue.index(after: attributeValue.startIndex)).trim()
+                    let tempAttributeValue = String(attributeValue.suffix(from: attributeValue.index(after: attributeValue.startIndex))).trim()
                     if (Data(base64Encoded: tempAttributeValue, options: NSData.Base64DecodingOptions.init(rawValue: 0)) != nil) {
                         if decodeBase64 {
                             if let data = Data(base64Encoded: tempAttributeValue),
