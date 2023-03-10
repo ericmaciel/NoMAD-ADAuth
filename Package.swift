@@ -8,14 +8,14 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "NoMADPRIVATE",
-            path: "NoMAD-ADAuth/ObjC",
-            publicHeadersPath: "."
-        ),
-        .target(
             name: "NoMAD-ADAuth",
             path: "NoMAD-ADAuth",
             exclude: ["ObjC", "FRAMEWORK.md", "Info.plist"]
+        ),
+        .target(
+            name: "NoMADPRIVATE",
+            path: "NoMAD-ADAuth/ObjC",
+            publicHeadersPath: "."
         ),
     ]
 )
