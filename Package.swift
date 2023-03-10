@@ -17,8 +17,7 @@ let package = Package(
         ),
         .target(
             name: "NoMADPRIVATE",
-            path: "NoMAD-ADAuth/ObjC",
-            publicHeadersPath: "."
+            path: "NoMAD-ADAuth/ObjC"
         ),
     ]
 )
