@@ -7,9 +7,7 @@
 //
 
 import Foundation
-#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
-#endif
 
 // what we're keeping track of for every user
 

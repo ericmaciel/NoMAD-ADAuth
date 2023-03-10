@@ -30,9 +30,7 @@
 //  SOFTWARE.
 import CommonCrypto
 import Foundation
-#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
-#endif
 /*
 
  Certification Request Syntax Specification: http://www.ietf.org/rfc/rfc2986.txt

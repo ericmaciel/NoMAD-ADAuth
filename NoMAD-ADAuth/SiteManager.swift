@@ -8,9 +8,7 @@
 
 import Foundation
 import SystemConfiguration
-#if canImport(NoMADPRIVATE)
 import NoMADPRIVATE
-#endif
 
 // singleton for the class
 
