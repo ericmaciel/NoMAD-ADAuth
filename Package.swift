@@ -4,8 +4,7 @@ import PackageDescription
 let package = Package(
     name: "NoMAD-ADAuth",
     products: [
-        .library(name: "NoMAD-ADAuth", targets: ["NoMAD-ADAuth"]),
-        .library(name: "NoMADPRIVATE", targets: ["NoMADPRIVATE"])
+        .library(name: "NoMAD-ADAuth", targets: ["NoMAD-ADAuth", "NoMADPRIVATE"])
     ],
     targets: [
         .target(
